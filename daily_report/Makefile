@@ -12,3 +12,10 @@ save:
 	git add $(FILENAME)
 	git commit -m "$(DATE)"
 	git push -u
+
+save/yesterday:
+	$(eval DATE := `date +%Y%m%d --date "1 day ago"`)
+	$(eval FILENAME := $(DATE).md)
+	git add $(FILENAME)
+	git commit -m "$(DATE)"
+	git push -u
