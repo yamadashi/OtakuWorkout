@@ -1,5 +1,6 @@
 DATE:=$$(date +%Y%m%d)
 SCHEDULED:=true
+LATEST:=$$(ls -t | grep .md | head -n 1)
 
 create:
 	$(eval FILENAME := $$(DATE).md)
@@ -23,3 +24,9 @@ save:
 
 save/yesterday:
 	$(MAKE) save DATE=$$(date +%Y%m%d -d "1 day ago")
+
+open/latest:
+	code $(LATEST)
+
+remove/latest:
+	rm $(LATEST)
