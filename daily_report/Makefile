@@ -1,30 +1,25 @@
-DATE:=`date +%Y%m%d`
-FILENAME:=$(DATE).md
+DATE:=$$(date +%Y%m%d)
+SCHEDULED:=false
 
 create:
+	$(eval FILENAME := $$(DATE).md)
 	touch $(FILENAME)
-	echo "# `date +%Y/%m/%d`" >> $(FILENAME)
+	echo "# $$(date -d $(DATE) +%Y/%m/%d)" >> $(FILENAME)
 	echo "## 今日のトレーニングメニュー" >> $(FILENAME)
+	if [ $(SCHEDULED) = true ]; then\
+		tools/bin/schedule schedule.dat >> $(FILENAME);\
+	fi
 	echo "## 所感" >> $(FILENAME)
 	code $(FILENAME)
 
 create/yesterday:
-	$(eval DATE := `date +%Y%m%d --date "1 day ago"`)
-	$(eval FILENAME := $(DATE).md)
-	touch $(FILENAME)
-	echo "# `date +%Y/%m/%d --date "1 day ago"`" >> $(FILENAME)
-	echo "## 今日のトレーニングメニュー" >> $(FILENAME)
-	echo "## 所感" >> $(FILENAME)
-	code $(FILENAME)
+	$(MAKE) create DATE=$$(date +%Y%m%d -d "1 day ago")
 
 save:
+	$(eval FILENAME := $$(DATE).md)
 	git add $(FILENAME)
 	git commit -m "$(DATE)"
 	git push -u
 
 save/yesterday:
-	$(eval DATE := `date +%Y%m%d --date "1 day ago"`)
-	$(eval FILENAME := $(DATE).md)
-	git add $(FILENAME)
-	git commit -m "$(DATE)"
-	git push -u
+	$(MAKE) save DATE=$$(date +%Y%m%d -d "1 day ago")
