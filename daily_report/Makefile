@@ -1,5 +1,5 @@
 DATE:=$$(date +%Y%m%d)
-SCHEDULED:=false
+SCHEDULED:=true
 
 create:
 	$(eval FILENAME := $$(DATE).md)
