@@ -1,6 +1,12 @@
+SHELL:=/bin/bash
 DATE:=$$(date +%Y%m%d)
 SCHEDULED:=true
 LATEST:=$$(ls -t | grep .md | head -n 1)
+YESTERDAY:=$$(date +%Y%m%d -d "1 day ago")
+
+define _rmsuffix
+endef
+
 
 create:
 	$(eval FILENAME := $$(DATE).md)
@@ -14,7 +20,7 @@ create:
 	code $(FILENAME)
 
 create/yesterday:
-	$(MAKE) create DATE=$$(date +%Y%m%d -d "1 day ago")
+	$(MAKE) create DATE=$(YESTERDAY)
 
 save:
 	$(eval FILENAME := $$(DATE).md)
@@ -23,7 +29,7 @@ save:
 	git push -u
 
 save/yesterday:
-	$(MAKE) save DATE=$$(date +%Y%m%d -d "1 day ago")
+	$(MAKE) save DATE=$(YESTERDAY)
 
 open/latest:
 	code $(LATEST)
